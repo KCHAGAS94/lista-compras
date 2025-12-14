@@ -4,15 +4,19 @@ import React from 'react';
 import { useProducts } from '../../contexts/ProductContext';
 import { Product } from '../../interfaces/Product';
 
-export const ProductList = () => {
+interface ProductListProps {
+    view: 'all' | 'toBuy';
+}
+
+export const ProductList = ({ view }: ProductListProps) => {
     const { products, removeProduct, updateProduct } = useProducts();
 
     const handleStockChange = (id: string, value: string) => {
         const newStock = parseInt(value, 10);
         const productToUpdate = products.find(p => p.id === id);
-        if (productToUpdate && !isNaN(newStock)) { // Only update if newStock is a valid number
+        if (productToUpdate && !isNaN(newStock)) {
             updateProduct({ ...productToUpdate, currentStock: newStock });
-        } else if (productToUpdate && value === '') { // Allow clearing the input to set stock to 0
+        } else if (productToUpdate && value === '') {
             updateProduct({ ...productToUpdate, currentStock: 0 });
         }
     };
@@ -26,14 +30,22 @@ export const ProductList = () => {
         return 'text-yellow-500'; // Low stock but above minimum
     };
 
+    const filteredProducts = view === 'toBuy'
+        ? products.filter(p => p.currentStock < p.minQuantity)
+        : products;
+
+    const listTitle = view === 'toBuy' ? 'Comprar' : 'Lista de Compras';
+
     return (
         <div className="p-4 bg-white rounded-lg shadow-md mt-8">
-            <h2 className="text-xl font-semibold mb-4 text-black">Lista de Compras</h2>
-            {products.length === 0 ? (
-                <p className="text-black">Nenhum produto na lista ainda.</p>
+            <h2 className="text-xl font-semibold mb-4 text-black">{listTitle}</h2>
+            {filteredProducts.length === 0 ? (
+                <p className="text-black">
+                    {view === 'toBuy' ? 'Nenhum produto para comprar.' : 'Nenhum produto na lista ainda.'}
+                </p>
             ) : (
                 <ul>
-                    {products.map((product) => (
+                    {filteredProducts.map((product) => (
                         <li key={product.id} className="border-b border-gray-200 py-2 flex justify-between items-center">
                             <div>
                                 <span className="font-medium text-black">{product.name}</span>

@@ -33,7 +33,7 @@ export const AddProduct = () => {
                     id="name"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
+                    className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 text-black"
                     required
                 />
             </div>
@@ -46,7 +46,7 @@ export const AddProduct = () => {
                     id="minQuantity"
                     value={minQuantity}
                     onChange={(e) => setMinQuantity(parseInt(e.target.value))}
-                    className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
+                    className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 text-black"
                     min="1"
                     required
                 />
@@ -60,7 +60,7 @@ export const AddProduct = () => {
                     id="buyQuantity"
                     value={buyQuantity}
                     onChange={(e) => setBuyQuantity(parseInt(e.target.value))}
-                    className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
+                    className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 text-black"
                     min="1"
                     required
                 />
@@ -74,7 +74,7 @@ export const AddProduct = () => {
                     id="currentStock"
                     value={currentStock}
                     onChange={(e) => setCurrentStock(parseInt(e.target.value))}
-                    className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
+                    className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 text-black"
                     min="0"
                     required
                 />
