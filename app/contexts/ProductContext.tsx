@@ -1,6 +1,6 @@
 'use client';
 
-import React, { createContext, useState, useContext, ReactNode } from 'react';
+import React, { createContext, useState, useContext, useEffect, ReactNode } from 'react';
 import { Product } from '../interfaces/Product';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -14,7 +14,19 @@ interface ProductContextType {
 const ProductContext = createContext<ProductContextType | undefined>(undefined);
 
 export const ProductProvider = ({ children }: { children: ReactNode }) => {
-    const [products, setProducts] = useState<Product[]>([]);
+    const [products, setProducts] = useState<Product[]>(() => {
+        if (typeof window !== 'undefined') {
+            const savedProducts = localStorage.getItem('shoppingListProducts');
+            return savedProducts ? JSON.parse(savedProducts) : [];
+        }
+        return [];
+    });
+
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            localStorage.setItem('shoppingListProducts', JSON.stringify(products));
+        }
+    }, [products]);
 
     const addProduct = (product: Omit<Product, 'id'>) => {
         const newProduct = { ...product, id: uuidv4() };
