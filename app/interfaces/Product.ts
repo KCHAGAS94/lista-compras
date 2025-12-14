@@ -3,5 +3,5 @@ export interface Product {
     name: string;
     minQuantity: number;
     buyQuantity: number;
-    currentStock: number;
+    quantityToBuy?: number;
 }
