@@ -105,6 +105,13 @@ export const ProductList = ({ view }: ProductListProps) => {
         setShowConfirmDialog(false);
     };
 
+    const handleToggleBought = (id: string, isBought: boolean) => {
+        const productToUpdate = products.find(p => p.id === id);
+        if (productToUpdate) {
+            updateProduct({ ...productToUpdate, isBought });
+        }
+    };
+
     const handleEditClick = (id: string) => {
         setEditingProductId(id);
     };
@@ -122,7 +129,14 @@ export const ProductList = ({ view }: ProductListProps) => {
         ? products.filter(p => (p.quantityToBuy ?? 0) > 0)
         : products)
         .slice()
-        .sort((a, b) => a.name.localeCompare(b.name));
+        .sort((a, b) => {
+            // Sort by isBought (false first, true last)
+            if ((a.isBought ?? false) && !(b.isBought ?? false)) return 1;
+            if (!(a.isBought ?? false) && (b.isBought ?? false)) return -1;
+
+            // Then sort by name
+            return a.name.localeCompare(b.name);
+        });
 
     const listTitle = view === 'toBuy' ? 'Comprar' : 'Lista de Compras';
 
@@ -145,24 +159,34 @@ export const ProductList = ({ view }: ProductListProps) => {
                                 <EditProductForm product={product} onSave={handleSaveEdit} onCancel={handleCancelEdit} />
                             ) : (
                                 <div className="flex items-center justify-between w-full">
-                                    <div>
-                                        <span className="font-medium text-black">{product.name}</span>
-                                        <p className="text-sm text-black">
-                                            Min: {product.minQuantity}, Pedido: {product.buyQuantity},
-                                            <div className="flex items-center space-x-1">
-                                                <span>Comprar:</span>
-                                                <input
-                                                    type="number"
-                                                    value={product.quantityToBuy}
-                                                    onChange={(e) => handleQuantityToBuyChange(product.id, e.target.value)}
-                                                    className="w-20 border border-gray-300 rounded-md p-1 text-center"
-                                                    min="0"
-                                                />
-                                            </div>
-                                        </p>
+                                    <div className="flex items-center">
+                                        <div>
+                                            <span className="font-medium text-black">{product.name}</span>
+                                            <p className="text-sm text-black">
+                                                Min: {product.minQuantity}, Pedido: {product.buyQuantity},
+                                                <div className="flex items-center space-x-1">
+                                                    <span>Comprar:</span>
+                                                    <input
+                                                        type="number"
+                                                        value={product.quantityToBuy}
+                                                        onChange={(e) => handleQuantityToBuyChange(product.id, e.target.value)}
+                                                        className="w-20 border border-gray-300 rounded-md p-1 text-center"
+                                                        min="0"
+                                                    />
+                                                </div>
+                                            </p>
 
+                                        </div>
                                     </div>
-                                    <div className="flex space-x-2">
+                                    <div className="flex items-center space-x-2">
+                                        {view === 'toBuy' && (
+                                            <input
+                                                type="checkbox"
+                                                checked={product.isBought ?? false}
+                                                onChange={(e) => handleToggleBought(product.id, e.target.checked)}
+                                                className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                                            />
+                                        )}
                                         <button
                                             onClick={() => handleEditClick(product.id)}
                                             className="text-blue-500 hover:text-blue-700 p-2 rounded-md"

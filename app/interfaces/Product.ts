@@ -4,4 +4,5 @@ export interface Product {
     minQuantity: number;
     buyQuantity: number;
     quantityToBuy?: number;
+    isBought?: boolean;
 }

@@ -29,7 +29,7 @@ export const ProductProvider = ({ children }: { children: ReactNode }) => {
     }, [products]);
 
     const addProduct = (product: Omit<Product, 'id'>) => {
-        const newProduct = { ...product, id: uuidv4(), quantityToBuy: product.quantityToBuy ?? 0 };
+        const newProduct = { ...product, id: uuidv4(), quantityToBuy: product.quantityToBuy ?? 0, isBought: false };
         setProducts((prevProducts) => [...prevProducts, newProduct]);
     };
 
