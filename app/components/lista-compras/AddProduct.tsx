@@ -8,17 +8,17 @@ export const AddProduct = () => {
     const [name, setName] = useState('');
     const [minQuantity, setMinQuantity] = useState(1);
     const [buyQuantity, setBuyQuantity] = useState(1);
-    const [currentStock, setCurrentStock] = useState(0);
+    const [quantityToBuy, setQuantityToBuy] = useState(0);
     const [isFormVisible, setIsFormVisible] = useState(false); // New state for form visibility
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         if (name.trim()) {
-            addProduct({ name, minQuantity, buyQuantity, currentStock });
+            addProduct({ name, minQuantity, buyQuantity, quantityToBuy });
             setName('');
             setMinQuantity(1);
             setBuyQuantity(1);
-            setCurrentStock(0);
+            setQuantityToBuy(0);
             setIsFormVisible(false); // Hide form after adding product
         }
     };
@@ -77,14 +77,14 @@ export const AddProduct = () => {
                         />
                     </div>
                     <div className="mb-4">
-                        <label htmlFor="currentStock" className="block text-sm font-medium text-black">
-                            Estoque Atual
+                        <label htmlFor="quantityToBuy" className="block text-sm font-medium text-black">
+                            Comprar
                         </label>
                         <input
                             type="number"
-                            id="currentStock"
-                            value={currentStock}
-                            onChange={(e) => setCurrentStock(parseInt(e.target.value))}
+                            id="quantityToBuy"
+                            value={quantityToBuy}
+                            onChange={(e) => setQuantityToBuy(parseInt(e.target.value))}
                             className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 text-black"
                             min="0"
                             required

@@ -119,7 +119,7 @@ export const ProductList = ({ view }: ProductListProps) => {
     };
 
     const filteredProducts = view === 'toBuy'
-        ? products.filter(p => p.quantityToBuy > 0)
+        ? products.filter(p => (p.quantityToBuy ?? 0) > 0)
         : products;
 
     const listTitle = view === 'toBuy' ? 'Comprar' : 'Lista de Compras';
