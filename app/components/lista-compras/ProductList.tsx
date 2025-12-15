@@ -118,9 +118,11 @@ export const ProductList = ({ view }: ProductListProps) => {
         setEditingProductId(null);
     };
 
-    const filteredProducts = view === 'toBuy'
+    const filteredProducts = (view === 'toBuy'
         ? products.filter(p => (p.quantityToBuy ?? 0) > 0)
-        : products;
+        : products)
+        .slice()
+        .sort((a, b) => a.name.localeCompare(b.name));
 
     const listTitle = view === 'toBuy' ? 'Comprar' : 'Lista de Compras';
 
